@@ -60,21 +60,21 @@ class OwnerController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	@GetMapping("/owners/new")
+	@GetMapping("/petowners/new")
 	public String initCreationForm(Map<String, Object> model) {
 		Owner owner = new Owner();
 		model.put("owner", owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping("/owners/new")
+	@PostMapping("/petowners/new")
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
 			this.owners.save(owner);
-			return "redirect:/owners/" + owner.getId();
+			return "redirect:/petowners/" + owner.getId();
 		}
 	}
 
@@ -104,7 +104,7 @@ class OwnerController {
 		else if (ownersResults.getTotalElements() == 1) {
 			// 1 owner found
 			owner = ownersResults.iterator().next();
-			return "redirect:/owners/" + owner.getId();
+			return "redirect:/petowners/" + owner.getId();
 		}
 		else {
 			// multiple owners found
@@ -131,14 +131,14 @@ class OwnerController {
 
 	}
 
-	@GetMapping("/owners/{ownerId}/edit")
+	@GetMapping("/petowners/{ownerId}/edit")
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		Owner owner = this.owners.findById(ownerId);
 		model.addAttribute(owner);
 		return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping("/owners/{ownerId}/edit")
+	@PostMapping("/petowners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
 			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {
@@ -147,7 +147,7 @@ class OwnerController {
 		else {
 			owner.setId(ownerId);
 			this.owners.save(owner);
-			return "redirect:/owners/{ownerId}";
+			return "redirect:/petowners/{ownerId}";
 		}
 	}
 
@@ -156,7 +156,7 @@ class OwnerController {
 	 * @param ownerId the ID of the owner to display
 	 * @return a ModelMap with the model attributes for the view
 	 */
-	@GetMapping("/owners/{ownerId}")
+	@GetMapping("/petowners/{ownerId}")
 	public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		Owner owner = this.owners.findById(ownerId);
