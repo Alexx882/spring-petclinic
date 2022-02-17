@@ -114,10 +114,71 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+
+
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>1.5.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.jrcodeza</groupId>
+      <artifactId>spring-openapi-schema-generator-plugin</artifactId>
+      <version>1.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.jrcodeza</groupId>
+      <artifactId>spring-openapi-client-generator-plugin</artifactId>
+      <version>1.3.0</version>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <!-- generate spec from code -->
+      <plugin>
+        <groupId>com.github.jrcodeza</groupId>
+        <artifactId>spring-openapi-schema-generator-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.springframework.samples</groupId>
+            <artifactId>spring-petclinic</artifactId>
+            <version>2.5.0-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generateOpenApi</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <title>Test title</title>
+          <description>Test description</description>
+          <version>1.0.0-TEST</version>
+          <modelPackages>
+            <modelPackage>org.springframework.samples.petclinic.model.*</modelPackage>
+            <modelPackage>org.springframework.samples.petclinic.owner.*</modelPackage>
+            <modelPackage>org.springframework.samples.petclinic.vet.*</modelPackage>
+          </modelPackages>
+          <controllerBasePackages>
+            <controllerBasePackage>org.springframework.samples.petclinic.owner.*</controllerBasePackage>
+            <controllerBasePackage>org.springframework.samples.petclinic.vet.*</controllerBasePackage>
+          </controllerBasePackages>
+          <outputDirectory>target/openapi</outputDirectory>
+          <!--                    <schemaFieldInterceptors>-->
+          <!--                        <schemaFieldInterceptor>com.github.jrcodeza.example.openapi.CustomSchemaFieldInterceptor</schemaFieldInterceptor>-->
+          <!--                    </schemaFieldInterceptors>-->
+          <!--                    <operationInterceptors>-->
+          <!--                        <operationInterceptor>com.github.jrcodeza.example.openapi.CustomSchemaOperationInterceptor</operationInterceptor>-->
+          <!--                    </operationInterceptors>-->
+          <generateExamples>true</generateExamples>
+          <!--                    <openApiExamplesResolver>com.github.jrcodeza.example.openapi.CustomExampleResolver</openApiExamplesResolver>-->
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
         <artifactId>spring-javaformat-maven-plugin</artifactId>
